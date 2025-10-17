@@ -37,7 +37,20 @@ public class DirectoryNode extends FileSystemNode{
     
     public FileSystemNode search(String targetName){
         if(this.name.equals(targetName)){
-            return result;
+            return this;
         }
+
+        for(FileSystemNode child: children){
+            if(child instanceof DirectoryNode){
+                FileSystemNode result = ((DirectoryNode)child).search(targetName);
+                if(result != null)
+                {
+                    return result;
+                }
+            }else if(child instanceof FileNode && child.getName().equals(targetName)){
+                return child;
+            }
+        }
+        return null;
     }
 }
