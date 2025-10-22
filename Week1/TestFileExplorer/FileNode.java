@@ -20,6 +20,4 @@ public class FileNode extends FileSystemNode{
     public String getName(){
         return name;
     }
-
-
 }
