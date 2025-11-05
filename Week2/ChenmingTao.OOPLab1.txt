@@ -1,0 +1,344 @@
+
+// Submission by Chenming Tao and Christopher Kearney
+
+
+
+
+//Main.java 
+
+package HomeDeviceController;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+public class Main {
+    public static void main(String[] args) {
+
+        SmartHomeController controller = new SmartHomeController();
+
+        // Devices
+        SmartDevice lamp = new SmartDevice(1, "Living Room Lamp", "Living Room");
+        SmartDevice bedroomLight = new SmartDevice(2, "Bedroom Light", "Bedroom");
+        SmartDevice backDoorLock = new SmartDevice(3, "Back Door", "Back Garden");
+        SmartDevice bathroomLight = new SmartDevice(4, "Bathroom Light", "Bathroom");
+        Light indoorLight = new Light(5, "Indoor main light", "Indoor");
+        Lock outerLock = new Lock(6, "Back Door Lock", "Exit");
+        Thermostat thermostat = new Thermostat(7, "Home Thermostat", "Hallway", 25.0);
+        CustomLight customLight = new CustomLight(8, "Sky Light", "Reading Room", 25);
+
+        // Setting up Date and Time
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now().withNano(0);
+        System.out.println("\n=== TIME ZONE ===");
+        System.out.println("Date: " + today + "\nTime: " + now);
+
+        // Register device method
+        controller.registerDevice(lamp);
+        controller.registerDevice(bedroomLight);
+        controller.registerDevice(backDoorLock);
+        controller.registerDevice(bathroomLight);
+        controller.registerDevice(indoorLight);
+        controller.registerDevice(outerLock);
+        controller.registerDevice(thermostat);
+        controller.registerDevice(customLight);
+
+        // Change brightness and temperature
+        customLight.setBrightness(45);
+        thermostat.setTemperature(28.0);
+
+        // Modes -- using multiple devices and methods simultaneously
+        controller.nightMode();
+        controller.morningMode();
+        controller.showStatus();
+
+        // Automated night mode -- Night mode will activate at 10pm until 6am
+        if (LocalTime.now().getHour() > 22 || LocalTime.now().getHour() < 6) {
+            controller.nightMode();
+        }
+
+        // Torture mode
+        controller.tortureMode();
+    }
+}
+
+//Light.java
+
+//Light class to turn Light on and off
+package HomeDeviceController;
+
+public class Light extends SmartDevice {
+
+    private int brightness;
+
+    public Light(int deviceID, String deviceName, String location) {
+        super(deviceID, deviceName, location);
+        this.brightness = 0;
+    }
+
+    public void setBrightness(int brightness) {
+        this.brightness = brightness;
+    }
+
+    public String printStatus() {
+        if (brightness == 0) {
+            return "Brightness OFF";
+        }
+        return "Brightness ON";
+    }
+}
+
+// Lock.java
+
+package HomeDeviceController;
+
+public class Lock extends SmartDevice {
+
+    private boolean locked;
+
+    public Lock(int deviceID, String deviceName, String location) {
+        super(deviceID, deviceName, location);
+        this.locked = false;
+    }
+
+    public void lock() {
+        locked = true;
+        System.out.println(getDeviceName() + " is now LOCKED");
+    }
+
+    public void unlock() {
+        locked = false;
+        System.out.println(getDeviceName() + " is now UNLOCKED");
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+    // Method to tell the user if the door Is currently LOCKED/UNLOCKED
+    public String printStatus() {
+        return locked ? "LOCKED" : "UNLOCKED";
+    }
+}
+
+//SmartDevice.java
+
+package HomeDeviceController;
+
+public class SmartDevice {
+
+    // Default attributes shared by all smart devices)
+    private int deviceID;
+    private String deviceName;
+    private String deviceLocation;
+    private boolean status; // true = ON, false = OFF
+
+    // Constructor
+    public SmartDevice(int deviceID, String deviceName, String deviceLocation) {
+        this.deviceID = deviceID;
+        this.deviceName = deviceName;
+        this.deviceLocation = deviceLocation;
+        this.status = false; // default: OFF
+    }
+
+    // Turn ON device method
+    public void turnOn() {
+        status = true;
+        System.out.println(deviceName + " is now ON");
+    }
+
+    // Turn OFF device method
+    public void turnOff() {
+        status = false;
+        System.out.println(deviceName + " is now OFF");
+    }
+
+    // Getters (for default parameters)
+    public int getDeviceID() {
+        return deviceID;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public String getDeviceLocation() {
+        return deviceLocation;
+    }
+
+    public boolean isOn() {
+        return status;
+    }
+
+    // Setters
+    public void setDeviceName(String newName) {
+        if (newName == null || newName.isEmpty()) {
+            System.out.println("Device name cannot be empty.");
+        } else {
+            this.deviceName = newName;
+            System.out.println("Device name updated to: " + newName);
+        }
+    }
+
+    public void setDeviceLocation(String newLocation) {
+        if (newLocation == null || newLocation.isEmpty()) {
+            System.out.println("Device location cannot be empty.");
+        } else {
+            this.deviceLocation = newLocation;
+            System.out.println("Device location updated to: " + newLocation);
+        }
+    }
+}
+
+//Thermostat.java
+
+//Creating a thermostat which takes a double as
+// a parameter to have a temperature range from
+// 1 - 100 (Not just ON/OFF)
+package HomeDeviceController;
+
+public class Thermostat extends SmartDevice {
+
+    private double temperature;
+
+    public Thermostat(int deviceID, String deviceName, String location, double temperature) {
+        super(deviceID, deviceName, location);
+        this.temperature = temperature;
+    }
+
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+        System.out.println(getDeviceName() + " temperature set to " + temperature + "°C");
+    }
+
+    public double getTemperature() {
+        return temperature;
+    }
+}
+
+//SmartHomeController.java
+
+package HomeDeviceController;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
+
+public class SmartHomeController {
+
+    private List<SmartDevice> deviceList;
+
+    public SmartHomeController() {
+        deviceList = new ArrayList<>();
+    }
+    // Add device to the deviceList array
+    public void registerDevice(SmartDevice device) {
+        deviceList.add(device);
+        System.out.println(device.getDeviceName() + " has been registered.");
+    }
+    // Turn ON/OFF any device
+    public void toggleDevice(String deviceName) {
+        for (SmartDevice listedDevice : deviceList) {
+            if (listedDevice.getDeviceName().equalsIgnoreCase(deviceName)) {
+                if (listedDevice.isOn()) {
+                    listedDevice.turnOff();
+                } else {
+                    listedDevice.turnOn();
+                }
+                return;
+            }
+        }
+        System.out.println("Device: " + deviceName + " not found.");
+    }
+    // Print the deviceList to show which devices have been registered
+    public void listDevices() {
+        System.out.println("\nREGISTERED DEVICES:");
+        for (SmartDevice listedDevice : deviceList) {
+            System.out.println("* " + listedDevice.getDeviceName() +
+                    " (" + listedDevice.getDeviceLocation() + ")");
+        }
+    }
+    // Control multiple devices simultaneously
+    public void nightMode() {
+        System.out.println("\n* ~ GOOD NIGHT ~ *");
+        for (SmartDevice listedDevice : deviceList) {
+            if (listedDevice instanceof Light || listedDevice instanceof CustomLight) {
+                listedDevice.turnOff();
+            } else if (listedDevice instanceof Lock) {
+                ((Lock) listedDevice).lock();
+            } else if (listedDevice instanceof Thermostat) {
+                ((Thermostat) listedDevice).setTemperature(18.0);
+            }
+        }
+    }
+    // Control multiple devices simultaneously
+    public void morningMode() {
+        System.out.println("\n* ~ GOOD MORNING ~ *");
+        for (SmartDevice listedDevice : deviceList) {
+            if (listedDevice instanceof Light || listedDevice instanceof CustomLight) {
+                listedDevice.turnOn();
+            } else if (listedDevice instanceof Lock) {
+                ((Lock) listedDevice).unlock();
+            } else if (listedDevice instanceof Thermostat) {
+                ((Thermostat) listedDevice).setTemperature(22.0);
+            }
+        }
+    }
+    // Show current status of each device
+    public void showStatus() {
+        System.out.println("\nCURRENT STATUS:");
+        for (SmartDevice listedDevice : deviceList) {
+            String name = listedDevice.getDeviceName();
+            String location = listedDevice.getDeviceLocation();
+
+            if (listedDevice instanceof Thermostat) {
+                Thermostat t = (Thermostat) listedDevice;
+                System.out.println("* " + name + " (" + location + "): " +
+                        t.getTemperature() + "°C");
+            } else if (listedDevice instanceof CustomLight) {
+                CustomLight cl = (CustomLight) listedDevice;
+                System.out.println("* " + name + " (" + location + "): " +
+                        cl.getBrightness() + "% Brightness");
+            } else if (listedDevice instanceof Lock) {
+                Lock lock = (Lock) listedDevice;
+                System.out.println("* " + name + " (" + location + "): " + lock.printStatus());
+            } else {
+                System.out.println("* " + name + " (" + location + "): " +
+                        (listedDevice.isOn() ? "ON" : "OFF"));
+            }
+        }
+    }
+    // tortureMode() -- Takes user input
+    // if UI doesnt match randomly generated number
+    // -- torture mode will activate
+    public void tortureMode() {
+        System.out.println("\n=== TORTURE MODE ACTIVATED ===");
+        System.out.println("Tell me the passcode between 0-10!");
+        Scanner input = new Scanner(System.in);
+        Random rand = new Random();
+
+        int passcode = input.nextInt();
+        int score = rand.nextInt(10);
+
+        if (passcode == score) {
+            System.out.println("You lucky one...");
+        } else {
+            for (SmartDevice listedDevice : deviceList) {
+                if (listedDevice instanceof Light light) {
+                    light.setBrightness(0);
+                    System.out.println("TortureMode: " + light.getDeviceName() +
+                            " -> " + light.printStatus());
+                } else if (listedDevice instanceof Lock lock) {
+                    lock.lock();
+                    System.out.println("TortureMode: " + lock.getDeviceName() +
+                            " -> " + lock.printStatus());
+                } else if (listedDevice instanceof Thermostat thermostat) {
+                    thermostat.setTemperature(75.0);
+                    System.out.println("TortureMode: " + thermostat.getDeviceName() +
+                            " set to " + thermostat.getTemperature() + "°C");
+                }
+            }
+        }
+    }
+}
+
+

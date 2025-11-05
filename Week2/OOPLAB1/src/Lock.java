@@ -1,3 +1,5 @@
+import java.sql.SQLOutput;
+
 public class Lock extends SmartDevice {
     boolean isLocked;
     public Lock(int deviceID, String deviceName, String location) {
@@ -7,5 +9,12 @@ public class Lock extends SmartDevice {
 
     public void setIsLocked(boolean isLocked) {
         this.isLocked = isLocked;
+    }
+
+    public String printStatus(){
+        if(isLocked){
+           return " Locked on";
+        }
+        return "";
     }
 }

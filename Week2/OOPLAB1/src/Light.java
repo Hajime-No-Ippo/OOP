@@ -8,4 +8,11 @@ public class Light extends SmartDevice {
     public void setBrightness(int brightness) {
         this.brightness = brightness;
     }
+
+    public String printStatus() {
+        if (brightness == 0){
+            return " Brightness off";
+        }
+        return " Brightness on";
+    }
 }

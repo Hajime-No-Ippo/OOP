@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class Main {
     public static void main(String[] args) {
         SmartHomeController controller = new SmartHomeController();
@@ -11,6 +14,7 @@ public class Main {
         controller.registerDevice(light1);
         controller.registerDevice(thermostat1);
         controller.registerDevice(doorLock1);
+
 
         // Toggle and adjust
         controller.toggleDevice("Living Room Light");
@@ -26,7 +30,30 @@ public class Main {
         for (SmartDevice d : controller.listDevices()) {
             System.out.println(d);
         }
+
+        //print the location
+        controller.printLocation();
+
+        //get the local time
+        LocalDate myObj = LocalDate.now();
+        LocalTime myTime = LocalTime.now();
+        LocalTime truncated = myTime.withNano(0);
+
+        //print the time and date
+        System.out.println("\n===Time Zone===");
+        System.out.println("Date: " + myObj + "\nTime: " + truncated);
+
+        //night mode
         controller.nightMode();
+        System.out.println("Additional Notice: The night mode would automatically turn on from 18:00 to 6:00");
+
+        //automated night mode
+        if(LocalTime.now().getHour()>18 || LocalTime.now().getHour()<6) {
+            controller.nightMode();
+        }
+
+        controller.tortureMode();
+
     }
 }
 
