@@ -1,0 +1,70 @@
+We will create a Transport Pass Management System that manages different types of transport passes (BusPass, MetroPass, BikeSharePass) for a user. Each pass type extends an abstract TransportPass class to ensure a standard interface for fare calculation, validity, and owner information.
+
+TransportPass 
+    Represents any transport pass
+    Variables (private):
+        passId (String) — unique identifier for the pass
+        ownerName (String) — name of the pass owner
+        age (int) — age of the pass owner
+        validUntil (LocalDate) — expiration date
+    Methods:
+        Getters and setters for passId, ownerName, age, validUntil
+        isTimeValid() — checks if pass is still valid
+        isAgeValid() — checks if owner is old enough to use pass
+        Abstract calculateFare(UsagePolicy policy) — overridden in each subclass for specific fare calculation
+    Encapsulation ensures controlled access to variables while allowing future validation rules
+
+
+BusPass (subclass of TransportPass)
+    Variables (private):
+        km (double) — distance of the trip
+        isStudent (boolean) — whether the owner is a student
+    Methods:
+        Getter/setter for km and isStudent
+        calculateFare() — fare depends on distance; student discount applied
+
+MetroPass (subclass of TransportPass)
+    Variables (private):
+        isStudent (boolean)
+        fare (double) — default base fare
+    Methods:
+        Getter/setter for isStudent and fare
+        calculateFare() — fare calculation with student discount
+
+BikeSharePass (subclass of TransportPass)
+    Variables (private):
+        dayOfRenting (int) — number of days rented
+        totalFare (double) — calculated fare
+    Methods:
+        Getter/setter for dayOfRenting
+        calculateFare() — fare depends on number of rental days with tiered pricing
+
+UsagePolicy
+    Variables (private):
+        zones (String) — zone type (Red, Green, Blue)
+        startTime, endTime (LocalTime) — peak hours
+    Methods:
+        isPeakHour() — checks if current time is peak hour
+        calculateFare() — adjusts base fare depending on zone, peak hours, and weekend discount
+        printMethods() — prints fare info for current time
+
+PassManager (Device Manager)
+    Variable (private): list of TransportPasses
+    Methods:
+        validatePass(TransportPass pass) — checks if pass is valid and owner is eligible
+        renewPass(TransportPass pass, int years) — extends validity of a pass
+    Centralizes pass management and ensures consistent rules for all passes
+
+UsageLog
+    Variable (private): list of trips for each pass
+    Methods:
+        addTrip(String trip) — logs a trip
+        printLog() — prints all trips
+
+Encapsulation & Scalability:
+    All variables are private for controlled access
+    Access is only via getters/setters, allowing:
+        Validation of inputs (e.g., km, student status)
+        Feedback when trying to perform invalid operations (e.g., expired pass)
+        Easy extension to add new rules (e.g., restrictions on peak hours or age)
+    The design is scalable, supporting new transport types or policies in the future
