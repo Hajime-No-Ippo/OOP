@@ -1,0 +1,34 @@
+This project implements a Gym Membership and Fitness Class Booking System using core Object-Oriented Programming (OOP) principles in Java.
+The goal is to model how gym members book different fitness classes, get charged dynamically, and maintain their account status based on their balance.
+
+🎯 Project Objectives
+
+Apply abstraction, inheritance, polymorphism, and encapsulation in a realistic scenario.
+
+Design a class hierarchy representing users, fitness classes, and booking behavior.
+
+Demonstrate interface usage and method overriding.
+
+Implement real-world business rules such as:
+
+Dynamic class fees
+
+Weekend discounts
+
+Membership balance validation
+
+| OOP Principle     | How It Is Shown in the Project                                       |
+| ----------------- | -------------------------------------------------------------------- |
+| **Encapsulation** | Member data (balance, ID) hidden behind getters/setters.             |
+| **Inheritance**   | All class types inherit from `BookingService`.                       |
+| **Polymorphism**  | Child classes override `getFee`, `getDescription`, `chargeFee`.      |
+| **Abstraction**   | `BookingService` provides an abstract template for all classes.      |
+| **Interfaces**    | `Bookable` ensures all classes are bookable and expose core methods. |
+
+
+
+Conclusion
+
+This project successfully implements a modular, maintainable OOP system that models real-world gym class bookings. Through the use of abstract classes, interfaces, inheritance, and encapsulation, the system remains extensible—new classes can easily be added without changing existing code.
+
+It serves as a complete demonstration of core OOP skills in Java while solving a practical, relatable problem scenario.

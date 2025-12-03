@@ -1,0 +1,396 @@
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+
+public class BallGameClass extends BookingService implements Bookable{
+    private double fees = 12.0;
+    protected String description = "This class will teach you basic rules on how to play some common ball games like basketball or soccer";
+    public BallGameClass(String cId, String className, MemberShip member){
+        super(cId,className);
+        this.fees = fees;
+        this.description = description;
+        this.member = member;
+    }
+
+    @Override
+    public double getFee(){
+        return fees;
+    }
+
+    //Get description from each child class.
+    @Override
+    public String getDescription(){
+        return description;
+    }
+
+    public String getClassName(){
+        return className;
+    }
+
+    //Discount on Weekend, charge fees from member's balance. Charged when child class was selected
+    public void chargeFee(){
+        double finalFee = this.fees;
+        // Weekend discount
+        DayOfWeek today = LocalDate.now().getDayOfWeek();
+        if (today == DayOfWeek.SATURDAY || today == DayOfWeek.SUNDAY) {
+            finalFee = finalFee * 0.8;  // 20% discount
+        }
+
+        // Deduct balance
+        double newBalance = member.getBalance() - finalFee;
+        member.setBalance(newBalance);
+
+    }
+
+    public void printFee(){
+        System.out.println("\n====="+getClassName()+"=====");
+        System.out.println(getDescription());
+        System.out.println("Class fee: " + this.fees);
+        System.out.println("Current balance: " + member.getBalance());
+        System.out.println(member.checkStatus());
+    }
+}
+
+public interface Bookable {
+    double getFee();
+    String getDescription();
+}
+
+public abstract class BookingService {
+    String className;
+    String cId;
+    protected MemberShip member;
+
+    public BookingService(String cId, String className){
+        this.className = className;
+        this.cId = cId;
+        this.member = member;
+    }
+
+    public abstract double getFee();
+    public abstract String getDescription();
+}
+
+import java.time.*;
+public class DeadLiftClass extends BookingService implements Bookable{
+    private double fees = 12.0;
+    protected String description = "The deadlift is a strength training exercise where a weighted barbell is lifted from the floor to a standing position and then returned to the floor.";
+    public DeadLiftClass(String cId, String className, MemberShip member){
+        super(cId,className);
+        this.fees = fees;
+        this.description = description;
+        this.member = member;
+    }
+
+    @Override
+    public double getFee(){
+        return fees;
+    }
+
+    //Get description from each child class.
+    @Override
+    public String getDescription(){
+        return description;
+    }
+
+    public String getClassName(){
+        return className;
+    }
+
+    //Discount on Weekend, charge fees from member's balance. Charged when child class was selected
+    public void chargeFee(){
+        double finalFee = this.fees;
+        // Weekend discount
+        DayOfWeek today = LocalDate.now().getDayOfWeek();
+        if (today == DayOfWeek.SATURDAY || today == DayOfWeek.SUNDAY) {
+            finalFee = finalFee * 0.8;  // 20% discount
+        }
+
+        // Deduct balance
+        double newBalance = member.getBalance() - finalFee;
+        member.setBalance(newBalance);
+
+    }
+
+    public void printFee(){
+        System.out.println("\n====="+getClassName()+"=====");
+        System.out.println(getDescription());
+        System.out.println("Class fee: " + this.fees);
+        System.out.println("Current balance: " + member.getBalance());
+        System.out.println(member.checkStatus());
+    }
+}
+
+import java.time.*;
+public class DeadLiftClass extends BookingService implements Bookable{
+    private double fees = 12.0;
+    protected String description = "The deadlift is a strength training exercise where a weighted barbell is lifted from the floor to a standing position and then returned to the floor.";
+    public DeadLiftClass(String cId, String className, MemberShip member){
+        super(cId,className);
+        this.fees = fees;
+        this.description = description;
+        this.member = member;
+    }
+
+    @Override
+    public double getFee(){
+        return fees;
+    }
+
+    //Get description from each child class.
+    @Override
+    public String getDescription(){
+        return description;
+    }
+
+    public String getClassName(){
+        return className;
+    }
+
+    //Discount on Weekend, charge fees from member's balance. Charged when child class was selected
+    public void chargeFee(){
+        double finalFee = this.fees;
+        // Weekend discount
+        DayOfWeek today = LocalDate.now().getDayOfWeek();
+        if (today == DayOfWeek.SATURDAY || today == DayOfWeek.SUNDAY) {
+            finalFee = finalFee * 0.8;  // 20% discount
+        }
+
+        // Deduct balance
+        double newBalance = member.getBalance() - finalFee;
+        member.setBalance(newBalance);
+
+    }
+
+    public void printFee(){
+        System.out.println("\n====="+getClassName()+"=====");
+        System.out.println(getDescription());
+        System.out.println("Class fee: " + this.fees);
+        System.out.println("Current balance: " + member.getBalance());
+        System.out.println(member.checkStatus());
+    }
+}
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+
+public class FitnessClass extends BookingService implements Bookable{
+    private double fees = 8.0;
+    protected String description = "The deadlift is a strength training exercise where a weighted barbell is lifted from the floor to a standing position and then returned to the floor.";
+    public FitnessClass(String cId, String className, MemberShip member){
+        super(cId,className);
+        this.fees = fees;
+        this.description = description;
+        this.member = member;
+    }
+
+    public double getFee(){
+        return fees;
+    }
+
+    //Get description from each child class.
+    public String getDescription(){
+        return description;
+    }
+
+    public String getClassName(){
+        return className;
+    }
+
+    //Discount on Weekend, charge fees from member's balance. Charged when child class was selected
+    public void chargeFee(){
+        double finalFee = this.fees;
+        // Weekend discount
+        DayOfWeek today = LocalDate.now().getDayOfWeek();
+        if (today == DayOfWeek.SATURDAY || today == DayOfWeek.SUNDAY) {
+            finalFee = finalFee * 0.8;  // 20% discount
+        }
+
+        // Deduct balance
+        double newBalance = member.getBalance() - finalFee;
+        member.setBalance(newBalance);
+
+    }
+
+    public void printFee(){
+        System.out.println("\n====="+getClassName()+"=====");
+        System.out.println(getDescription());
+        System.out.println("Class fee: " + this.fees);
+        System.out.println("Current balance: " + member.getBalance());
+        System.out.println(member.checkStatus());
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        MemberShip m = new MemberShip("Tom", 50, "Dublin", true);
+        MemberShip n = new MemberShip("Alex", 500, "Dublin", true);
+        MemberShip p = new MemberShip("Peter", 20, "Dublin", true);
+        MemberShip c = new MemberShip("John", 7, "Dublin", true);
+
+        BallGameClass bgc = new BallGameClass("FC0023", "Football", c);
+        bgc.chargeFee();
+        bgc.printFee();
+
+        c.chargeBalance(10.0);
+
+        YogaClass vgn = new YogaClass("YG002DS3", "Yoga", n);
+        vgn.chargeFee();
+        vgn.printFee();
+
+        FitnessClass fnm = new FitnessClass("0023", "Running", m);
+        fnm.chargeFee();
+        fnm.printFee();
+    }
+}
+
+import java.lang.reflect.Member;
+import java.time.*;
+import java.util.*;
+
+public class MemberManager extends MemberShip {
+    public MemberManager(String name, double balance, String location, boolean isActive){
+        super(name, balance, location, isActive);
+    }
+
+    @Override
+    public void chargeBalance(double amount){}
+
+    @Override
+    public boolean isActive(){
+        if(getBalance() == 0){
+        return false;
+    }
+        return true;
+    }
+}
+
+import java.time.*;
+import java.util.*;
+
+public class MemberShip {
+    private UUID uid;
+    private String name;
+    private LocalDateTime joinedDate;
+    private double balance;
+    private String location;
+    private boolean isActive;
+
+    //Consturctor
+    public MemberShip(String name, double balance, String location, boolean isActive){
+        this.name = name;
+        this.balance = balance;
+        this.location = location;
+        this.isActive = isActive;
+        this.uid = UUID.randomUUID();
+    }
+
+    public UUID getId() {
+        return uid;
+    }
+
+    public void setId(UUID id) {
+        this.uid = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDateTime getJoinedDate() {
+        return joinedDate;
+    }
+
+    public void setJoinedDate(LocalDateTime joinedDate){
+        this.joinedDate = joinedDate;
+    }
+
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public String checkStatus(){
+        System.out.println("\n=====Checking Status=====");
+        if(getBalance() <= 0){
+            return "Invalid Balance, no longer available";
+        }
+        return "Valid status";
+    }
+    public void chargeBalance(double amount){
+        double newBalance = getBalance() + amount;
+        setBalance(newBalance);
+    }
+
+    public boolean isActive(){
+        if(getBalance() == 0){
+            return false;
+        }
+        return true;
+    }
+}
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+
+
+
+
+    public class YogaClass extends BookingService implements Bookable{
+        private double fees = 9.0;
+        protected String description = "This class focuses on flexibility and breathing techniques.";
+        public YogaClass(String cId, String className, MemberShip member) {
+            super(cId, className);
+            this.fees = fees;
+            this.description = description;
+            this.member = member;
+        }
+
+        @Override
+        public double getFee() {
+            return fees;
+        }
+
+        //Get description from each child class.
+        @Override
+        public String getDescription() {
+            return description;
+        }
+
+        public String getClassName() {
+            return className;
+        }
+
+        //Discount on Weekend, charge fees from member's balance. Charged when child class was selected
+        public void chargeFee() {
+            double finalFee = this.fees;
+            // Weekend discount
+            DayOfWeek today = LocalDate.now().getDayOfWeek();
+            if (today == DayOfWeek.SATURDAY || today == DayOfWeek.SUNDAY) {
+                finalFee = finalFee * 0.8;  // 20% discount
+            }
+
+            // Deduct balance
+            double newBalance = member.getBalance() - finalFee;
+            member.setBalance(newBalance);
+
+        }
+
+        public void printFee(){
+            System.out.println("\n====="+getClassName()+"=====");
+            System.out.println(getDescription());
+            System.out.println("Class fee: " + this.fees);
+            System.out.println("Current balance: " + member.getBalance());
+            System.out.println(member.checkStatus());
+        }
+
+}
+
+
