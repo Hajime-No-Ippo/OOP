@@ -66,7 +66,7 @@ public class Main {
         items.add(product3);
         items.add(product4);
         items.add(product5);
-
+        // Then we can using Different Data Structure to Store data we need to use
         for (Displayable d : items) {
             d.displayInfo();
         }
